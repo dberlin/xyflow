@@ -1,0 +1,1 @@
+export { CallOnMount } from './CallOnMount';

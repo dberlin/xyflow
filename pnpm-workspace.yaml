@@ -1,5 +1,11 @@
 packages:
-  - 'packages/*'
-  - 'examples/*'
-  - 'tooling/*'
-  - 'tests/*'
+  - packages/*
+  - examples/*
+  - tooling/*
+  - tests/*
+onlyBuiltDependencies:
+  - '@sveltejs/kit'
+  - '@swc/core'
+  - esbuild
+  - sharp
+  - svelte-preprocess
