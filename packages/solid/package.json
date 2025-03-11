@@ -1,0 +1,100 @@
+{
+  "name": "@xyflow/solid",
+  "version": "0.0.1",
+  "description": "Solid Flow - A highly customizable Solid library for building node-based editors and interactive flow charts.",
+  "keywords": [
+    "solid",
+    "node-based UI",
+    "graph",
+    "diagram",
+    "workflow",
+    "solid-flow",
+    "xyflow"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xyflow/xyflow.git",
+    "directory": "packages/solid"
+  },
+  "homepage": "https://solidflow.dev",
+  "bugs": {
+    "url": "https://github.com/xyflow/xyflow/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "source": "src/index.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "node": {
+        "types": "./dist/index.d.ts",
+        "module": "./dist/index.js",
+        "require": "./dist/index.umd.js",
+        "import": "./dist/index.mjs"
+      },
+      "browser": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.umd.js"
+      },
+      "default": "./dist/index.mjs"
+    },
+    "./dist/base.css": "./dist/base.css",
+    "./dist/style.css": "./dist/style.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && pnpm run css",
+    "css": "postcss src/styles/{base,style}.css --config ./../../tooling/postcss-config/ --dir dist ",
+    "css-watch": "pnpm css --watch",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@xyflow/system": "workspace:*",
+    "classcat": "^5.0.5",
+    "solid-js": "^1.9.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^22.13.10",
+    "@typescript-eslint/parser": "^8.26.1",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.6",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-solid": "^0.14.5",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1",
+    "postcss-combine-duplicated-selectors": "^10.0.3",
+    "postcss-import": "^16.1.0",
+    "postcss-nested": "^7.0.2",
+    "postcss-rename": "^0.6.1",
+    "typescript": "5.8.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.2.1",
+    "vite-plugin-dts": "^4.5.3",
+    "vite-plugin-solid": "^2.11.6"
+  },
+  "rollup": {
+    "globals": {
+      "classcat": "cc",
+      "zustand": "zustand",
+      "zustand/shallow": "zustandShallow"
+    },
+    "name": "SolidFlow"
+  }
+}

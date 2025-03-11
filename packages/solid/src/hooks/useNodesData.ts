@@ -1,0 +1,57 @@
+import { Accessor } from 'solid-js';
+
+import { useStore } from '../hooks/useStore';
+import type { Node } from '../types';
+
+/**
+ * This hook lets you subscribe to changes of a specific nodes `data` object.
+ *
+ * @public
+ * @param nodeId - The id (or ids) of the node to get the data from
+ * @returns An accessor function for an object (or array of objects) with {id, type, data} representing each node
+ *
+ * @example
+ *
+ *```jsx
+ *import { useNodesData } from '@xyflow/solid';
+ *
+ *export default function() {
+ *  const nodeData = useNodesData('nodeId-1');
+ *  const nodesData = useNodesData(['nodeId-1', 'nodeId-2']);
+ *
+ *  return null;
+ *}
+ *```
+ */
+export function useNodesData<NodeType extends Node = Node>(
+  nodeId: string
+): Accessor<Pick<NodeType, 'id' | 'type' | 'data'> | null>;
+export function useNodesData<NodeType extends Node = Node>(
+  nodeIds: string[]
+): Accessor<Pick<NodeType, 'id' | 'type' | 'data'>[]>;
+export function useNodesData<NodeType extends Node = Node>(
+  nodeIds: string | string[]
+): Accessor<Pick<NodeType, 'id' | 'type' | 'data'> | Pick<NodeType, 'id' | 'type' | 'data'>[] | null> {
+  return () => {
+    return useStore(
+      (s) => {
+        const data = [];
+        const isArrayOfIds = Array.isArray(nodeIds);
+        const _nodeIds = isArrayOfIds ? nodeIds : [nodeIds];
+
+        for (const nodeId of _nodeIds) {
+          const node = s.nodeLookup.get(nodeId);
+          if (node) {
+            data.push({
+              id: node.id,
+              type: node.type,
+              data: node.data,
+            });
+          }
+        }
+
+        return isArrayOfIds ? data : data[0] ?? null;
+      } /*FIXME: Check this, shallowNodeData*/
+    );
+  };
+}
