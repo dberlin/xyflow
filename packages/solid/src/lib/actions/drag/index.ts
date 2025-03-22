@@ -34,19 +34,18 @@ export default function drag(domNode: Element, params: UseDragParams) {
     onDragStop,
     onNodeMouseDown,
     getStoreItems: () => {
-      const { snapGrid, viewport } = store;
 
       return {
         nodes: store.nodes,
         nodeLookup: store.nodeLookup,
         edges: store.edges,
         nodeExtent: store.nodeExtent,
-        snapGrid: snapGrid ? snapGrid : [0, 0],
-        snapToGrid: !!snapGrid,
+        snapGrid: store.snapGrid ? store.snapGrid : [0, 0],
+        snapToGrid: !!store.snapGrid,
         nodeOrigin: store.nodeOrigin,
         multiSelectionActive: store.multiselectionKeyPressed,
         domNode: store.domNode,
-        transform: [viewport.x, viewport.y, viewport.zoom],
+        transform: [store.viewport.x, store.viewport.y, store.viewport.zoom],
         autoPanOnNodeDrag: store.autoPanOnNodeDrag,
         nodesDraggable: store.nodesDraggable,
         selectNodesOnDrag: store.selectNodesOnDrag,

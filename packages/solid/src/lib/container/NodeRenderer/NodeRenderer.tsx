@@ -1,4 +1,4 @@
-import { Component, For, onCleanup } from 'solid-js';
+import { Component, createMemo, For, onCleanup } from 'solid-js';
 import { NodeWrapper } from '../../components/NodeWrapper';
 import type { InternalNode, NodeEvents } from '../../types';
 import type { SolidFlowStore } from '../../store/types';
@@ -32,10 +32,10 @@ export const NodeRenderer: Component<NodeRendererProps> = (props) => {
   onCleanup(() => {
     resizeObserver?.disconnect();
   });
-
+  const visibleNodeVals = createMemo(()=>Array.from(props.store.visible.nodes.values()));
   return (
     <div class="solid-flow__nodes">
-      <For each={Array.from(props.store.visible.nodes.values())}>
+      <For each={visibleNodeVals()}>
         {(node: InternalNode) => (
           <NodeWrapper
             store={props.store}

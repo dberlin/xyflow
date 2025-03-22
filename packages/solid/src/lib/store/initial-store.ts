@@ -22,7 +22,7 @@ import {
   updateConnectionLookup,
   type Viewport,
 } from '@xyflow/system';
-
+import fastEquals from 'fast-deep-equal';
 import { DefaultNode } from '../components/nodes/DefaultNode';
 import { InputNode } from '../components/nodes/InputNode';
 import { OutputNode } from '../components/nodes/OutputNode';
@@ -83,9 +83,14 @@ const createMediaQuery = (query: string, initialState = false) => {
 };
 
 export const getInitialStore = (signals: StoreSignals) => {
-  // Create store using Solid's primitives
-  const [nodes, setNodes] = createSignal(signals.nodes || []);
-  const [edges, setEdges] = createSignal(signals.edges || []);
+  // We use signals because they are not automatically deeply reactive, which matches
+  // other *Flow libraries.  Right now, in this initial implementation, I have not
+  // implemented the same shallow equals kind that exists in other flow libraries.
+  // Without this deep equal, we will think nodes/edges have always changed as updates
+  // do not keep the same top-level array, only the items within it.
+
+  const [nodes, setNodes] = createSignal(signals.nodes || [], { equals: (prev, next) => fastEquals(prev, next) });
+  const [edges, setEdges] = createSignal(signals.edges || [], { equals: (prev, next) => fastEquals(prev, next) });
 
   // Create signals for various store values
   const [domNode, setDomNode] = createSignal<HTMLDivElement | null>(null);
@@ -247,9 +252,8 @@ export const getInitialStore = (signals: StoreSignals) => {
 
   const visible = createMemo(() => {
     // Access the dependent memos to trigger reactivity
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const tempNodes = _nodesWithAdoption();
-    const tempEdges = _edgesWithConnection();
-    const tempViewport = viewport();
     let visibleNodes: Map<string, InternalNode>;
     let visibleEdges: Map<string, EdgeLayouted>;
 

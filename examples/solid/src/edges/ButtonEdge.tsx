@@ -1,4 +1,4 @@
-import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath, useSolidFlow } from '@xyflow/solid';
+import { BaseEdge, Edge, EdgeLabelRenderer, EdgeProps, getBezierPath, useSolidFlow, useEdges } from '@xyflow/solid';
 
 const buttonStyle = {
   width: "20",
@@ -23,10 +23,10 @@ export default function ButtonEdge({
   targetY,
   sourcePosition,
   targetPosition,
-  style = {},
+  style = "",
   markerEnd,
 }: EdgeProps<ButtonEdge>) {
-  const { setEdges } = useSolidFlow();
+  const edges = useEdges();
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -37,7 +37,8 @@ export default function ButtonEdge({
   });
 
   const onEdgeClick = () => {
-    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+    const newEdges = edges.current.filter((edge) => edge.id !== id);
+    edges.set(newEdges);
   };
 
   return (

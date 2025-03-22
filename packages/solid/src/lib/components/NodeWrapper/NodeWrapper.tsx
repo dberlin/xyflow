@@ -59,7 +59,7 @@ export const NodeWrapper = (props: NodeWrapperProps & NodeEvents) => {
 
   const initialized = createMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    mergedProps.store.nodes;
+    // mergedProps.store.nodes;
     const initState = nodeHasDimensions(mergedProps.node) && !!mergedProps.node.internals?.handleBounds;
     console.log('initState', initState);
     return initState;

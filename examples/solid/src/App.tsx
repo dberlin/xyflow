@@ -1,4 +1,6 @@
 import { Background, Controls, MiniMap, SolidFlow, SolidFlowProvider } from '@xyflow/solid';
+import { attachDevtoolsOverlay } from '@solid-devtools/overlay'
+
 
 import '@xyflow/solid/dist/style.css';
 
@@ -10,25 +12,29 @@ import { Node, Edge} from '@xyflow/solid'
 
 
 export default function App() {
-  const [getNodeData, setNodeData] = createSignal<Node[]>(initialNodes);
-  const [getEdgeData, setEdgeData] = createSignal<Edge[]>(initialEdges);
-  const props = {
-    get nodes() {
-      return getNodeData();
-    },
+  attachDevtoolsOverlay()
 
-    get edges() {
-      return getEdgeData();
-    },
-  }
+  /* const [getNodeData, setNodeData] = createSignal<Node[]>(initialNodes);
+   const [getEdgeData, setEdgeData] = createSignal<Edge[]>(initialEdges);
+   const props = {
+     get nodes() {
+       return getNodeData();
+     },
+
+     get edges() {
+       return getEdgeData();
+     },
+   }*/
+ let testNodes:Node[] = initialNodes;
+ let testEdges:Edge[] = initialEdges;
   return (
     <SolidFlowProvider>
       <SolidFlow
-        nodes={props.nodes}
-        setNodes={setNodeData}
+        nodes={testNodes}
+        setNodes={(x)=>{testNodes = x}}
         nodeTypes={nodeTypes}
-        edges={props.edges}
-        setEdges={setEdgeData}
+        edges={testEdges}
+        setEdges={(x)=>{testEdges = x}}
         edgeTypes={edgeTypes}
         fitView
         fitViewOptions={{

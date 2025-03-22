@@ -1,4 +1,4 @@
-import { Component, createMemo } from 'solid-js';
+import { Component, createMemo, Show } from 'solid-js';
 import { getInternalNodesBounds, isNumeric } from '@xyflow/system';
 
 import { Selection } from '../../components/Selection';
@@ -31,8 +31,7 @@ export const NodeSelection: Component<NodeSelectionProps> = (props) => {
   const handleKeyUp = () => {};
 
   return (
-    <>
-      {props.store.selectionRectMode === 'nodes' && bounds() && isNumeric(bounds().x) && isNumeric(bounds().y) && (
+      <Show when={props.store.selectionRectMode === 'nodes' && bounds() && isNumeric(bounds().x) && isNumeric(bounds().y)}>
         <div
           class="selection-wrapper nopan"
           style={{
@@ -66,7 +65,6 @@ export const NodeSelection: Component<NodeSelectionProps> = (props) => {
         >
           <Selection width="100%" height="100%" x={0} y={0} />
         </div>
-      )}
-    </>
+      </Show>
   );
 };
